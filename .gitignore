@@ -1,0 +1,5 @@
+# Temporary files of editors
+*~
+
+# Python bytecode files
+*.pyc
