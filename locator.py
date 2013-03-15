@@ -10,6 +10,7 @@ import gtk
 from Counter import *
 from Smiley import *
 from Host import *
+from Person import *
 
 # Drag'n'Drop
 TARGET_TYPE_NDDE = 80
@@ -211,6 +212,7 @@ if __name__ == "__main__":
         Smiley(ident=counter.get(), name='happy', Type='App', x=150, y=100, gui=app),
         Smiley(ident=counter.get(), Type='Data', x=250, y=200, gui=app),
         Host(ident=counter.get(), Type='Data', x=50, y=200, ip="192.168.0.1", gui=app),
+        Person(ident=counter.get(), x=300, y=400, surname="9", gui=app),
         ]
     for node in NodeList :
         app.add_node(node)
