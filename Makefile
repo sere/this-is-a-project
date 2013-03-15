@@ -4,4 +4,4 @@
 # directory
 
 clean:
-	rm *{~,.pyc}
+	rm -f *{~,.pyc}
