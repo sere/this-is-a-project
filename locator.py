@@ -31,7 +31,8 @@ class Locator:
         self.counter = counter
 
         window = gtk.Window(gtk.WINDOW_TOPLEVEL)
-        window.set_default_size(400, 400)
+        window.set_default_size(self.WIDTH, self.HEIGHT)
+        window.set_title("Locator")
         window.connect("destroy", lambda w: gtk.main_quit())
 
         # HERE GOES ALL THE PACKING STUFF
@@ -65,8 +66,8 @@ class Locator:
     def layout_resize(self, widget, event):
         x, y, width, height = widget.get_allocation()
         if width > self.lwidth or height > self.lheight:
-            self.lwidth = max(width, self.lwidth)
-            self.lheight = max(height, self.lheight)
+            self.lwidth = width
+            self.lheight = height
             widget.set_size(self.lwidth, self.lheight)
 
     def makeLayout(self):
