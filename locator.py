@@ -174,7 +174,10 @@ class Locator:
         return False
 
     def get_new_node(self, classname, field, content):
-        newnode = eval(classname + "(" + str(field) + "=" + str(content) + ", name='New', x=100, y=100, gui=self)")
+        command = classname + "("
+        if field != "ident":
+            command = command + "ident=" + str(self.counter.get()) + ", "
+        newnode = eval(command + str(field) + "='" + str(content) + "', name='New', x=100, y=100, gui=self)")
         assert(newnode != None)
         self.add_node(newnode)
         return newnode
