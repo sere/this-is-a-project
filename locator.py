@@ -11,6 +11,9 @@ from Counter import *
 from Smiley import *
 from Host import *
 from Person import *
+from IP_address import *
+from WebServer import *
+from DNS_server import *
 
 # Drag'n'Drop
 TARGET_TYPE_NDDE = 80
@@ -178,7 +181,9 @@ class Locator:
         command = classname + "("
         if field != "ident":
             command = command + "ident=" + str(self.counter.get()) + ", "
-        newnode = eval(command + str(field) + "='" + str(content) + "', name='New', x=100, y=100, gui=self)")
+        prova = command + str(field) + "='" + str(content) + "', name='New', x=100, y=100, gui=self)"
+        print prova
+        newnode = eval(prova)
         assert(newnode != None)
         self.add_node(newnode)
         return newnode
@@ -209,9 +214,9 @@ if __name__ == "__main__":
 
     NodeList = [
         Smiley(ident=counter.get(), name='very happy', Type='Data', x=50 , y=50, gui=app),
-        Smiley(ident=counter.get(), name='happy', Type='App', x=150, y=100, gui=app),
-        Smiley(ident=counter.get(), Type='Data', x=250, y=200, gui=app),
-        Host(ident=counter.get(), Type='Data', x=50, y=200, ip="192.168.0.1", gui=app),
+        DNS_server(ident=counter.get(), name='happy', Type='App', x=150, y=100, gui=app),
+        WebServer(ident=counter.get(), name='server', Type='Data', x=250, y=200, gui=app),
+        IP_address(ident=counter.get(), Type='Data', x=50, y=200, ip="192.168.0.1", gui=app),
         Person(ident=counter.get(), x=300, y=400, surname="9", gui=app),
         ]
     for node in NodeList :

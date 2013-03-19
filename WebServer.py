@@ -3,10 +3,11 @@
 # A most important resource in a network
 #
 from Node import *
+from Host import *
 
-class Person(Node):
+class WebServer(Node):
 
-    features = ["name", "surname"]
+    features = ["name"]
     
     tiny_pixbuf = gtk.gdk.pixbuf_new_from_xpm_data([
         "26 26 5 1",
@@ -16,36 +17,37 @@ class Person(Node):
         "X c blue",
         "- c None",
         "--------------------------",
-        "------------  ------------",
-        "----------  oo  ----------",
-        "--------- oooooo ---------",
-        "--------  o oo o  --------",
-        "--------  oooooo  --------",
-        "--------   oooo   --------",
-        "------------oo------------",
-        "------------oo------------",
-        "--ooXXXXXXXXXXXXXXXXXXoo--",
-        "---oXXXXXXXXXXXXXXXXXXo---",
-        "----------XXXXXX----------",
-        "----------XXXXXX----------",
-        "----------XXXXXX----------",
-        "----------XXXXXX----------",
-        "----------XXXXXX----------",
-        "----------      ----------",
-        "----------      ----------",
-        "---------        ---------",
-        "--------          --------",
-        "--------    --    --------",
-        "-------    ----    -------",
-        "-------    ----    -------",
-        "------    ------    ------",
-        "-----    --------    -----",
+        "--------------------------",
+        "--XXXX----XXX----X-----X--",
+        "-X--------X--X---X-----X--",
+        "-X--------X---X--X-----X--",
+        "--XXX-----XXX-----X---X---",
+        "------X---X--X----X---X---",
+        "------X---X---X----X-X----",
+        "-XXXXX----X---X-----X-----",
+        "--------------------------",
+        "--------------------------",
+        "--------------------------",
+        "--------------------------",
+        "--------------------------",
+        "--------------------------",
+        "--------------------------",
+        "--------------------------",
+        "--------------------------",
+        "--------------------------",
+        "--------------------------",
+        "--------------------------",
+        "--------------------------",
+        "--------------------------",
+        "--------------------------",
+        "--------------------------",
         "--------------------------"
         ])
 
-    def __init__(self, name=None, surname='8', x=50, y=50, ident=None, gui=None):
-        Node.__init__(self, name,'person', x, y, ident, gui)
-        self.surname = 8
+    def __init__(self, name=None, Type='data',  x=50, y=50, ident=None, gui=None):
+        assert(name != None)
+        self.name=name
+        Node.__init__(self, name,'webserver', x, y, ident, gui)
         self.find_neighbors_script = "./script.sh"
 
     def node_clicked(self, widget, event):
@@ -53,13 +55,11 @@ class Person(Node):
         # If right-click
         if event.button == 3:
             newmenu = gtk.Menu()
-            newitem = gtk.MenuItem('Find people')
+            newitem = gtk.MenuItem('stub')
             newmenu.append(newitem)
             newitem.connect("button-press-event", self.find_neighbors, )
-            newitem1 = gtk.MenuItem('Find pc')
+            newitem1 = gtk.MenuItem('stub')
             newmenu.append(newitem1)
-            newitem2 = gtk.MenuItem('Find DNS')
-            newmenu.append(newitem2)
             newmenu.show_all()
             newmenu.popup(None, None, None, event.button, event.time)
 
