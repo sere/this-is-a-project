@@ -6,7 +6,7 @@ from Node import *
 
 class IP_address(Node):
 
-    features = ["ip"]
+    features = []
 
     tiny_pixbuf = gtk.gdk.pixbuf_new_from_xpm_data([
         "26 20 5 1",

@@ -127,7 +127,7 @@ class Node:
 
     def modify_features(self, widget, event):
         # Modify only on double click
-        if event.type == gtk.gdk._2BUTTON_PRESS:
+        if event.type == gtk.gdk._2BUTTON_PRESS and len(self.features) > 0:
             # Create temporary window
             textboxes = []
             window = gtk.Window()
