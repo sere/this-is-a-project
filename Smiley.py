@@ -6,6 +6,7 @@ from Node import *
 
 class Smiley(Node):
 
+    read_features = ["name"]
     features = ["name"]
 
     tiny_pixbuf = gtk.gdk.pixbuf_new_from_xpm_data([

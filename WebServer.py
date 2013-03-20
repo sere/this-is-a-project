@@ -7,6 +7,7 @@ from Host import *
 
 class WebServer(Node):
 
+    read_features = ["name", "host"]
     features = ["name", "host"]
     
     tiny_pixbuf = gtk.gdk.pixbuf_new_from_xpm_data([

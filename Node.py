@@ -20,6 +20,7 @@ class Node:
 
     tiny_pixbuf = None
     find_neighbors_script = None
+    read_features = ["x", "y", "name"]
     features = ["x", "y", "name"]
 
     def __init__(self,name=None,Type='Data',x=50, y=50, ident=None, gui=None):
@@ -101,7 +102,7 @@ class Node:
     def show_features(self, widget, event):
 	# Show features of node around object
 	newlabel = ""
-	for name in self.features:
+	for name in self.read_features:
 		newlabel = newlabel + " " + name + ":" + str(eval('self.' + name))
 	self.dataPanel_label.set_label(newlabel)
 	self.dataPanel_label.show()

@@ -6,6 +6,7 @@ from Node import *
 
 class DNS_server(Node):
 
+    read_features = ["name", "ip"]
     features = ["name", "ip"]
 
     tiny_pixbuf = gtk.gdk.pixbuf_new_from_xpm_data([

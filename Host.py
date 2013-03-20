@@ -9,6 +9,7 @@ class Host(Node):
 
     # ipaddr is an istance of the class IP_address, 
     # while ip represents the "real" ip of the host
+    read_features = ["ip"]
     features = ["ip"]
 
     tiny_pixbuf = gtk.gdk.pixbuf_new_from_xpm_data([

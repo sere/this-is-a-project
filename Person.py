@@ -6,6 +6,7 @@ from Node import *
 
 class Person(Node):
 
+    read_features = ["name", "surname"]
     features = ["name", "surname"]
     
     tiny_pixbuf = gtk.gdk.pixbuf_new_from_xpm_data([
