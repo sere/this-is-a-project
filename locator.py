@@ -186,12 +186,16 @@ class Locator:
         return False
 
     def get_new_node(self, classname, field, content):
-        command = classname + "("
-        if field != "ident":
-            command = command + "ident=" + str(self.counter.get()) + ", "
-        prova = command + str(field) + "='" + str(content) + "', name='New', x=100, y=100, gui=self)"
-        print prova
-        newnode = eval(prova)
+        # Set default values for new node
+        # FIXME: automatically compute position for new object?
+        args_dict = {'name': 'New', 'x': 100, 'y': 100, 'gui': self}
+        # Handle unique identifier
+        if field != 'ident':
+            args_dict['ident'] = str(self.counter.get())
+        # Set required field
+        args_dict[field] = content
+        # Get new instance of requested class
+        newnode = globals()[classname](**args_dict)
         assert(newnode != None)
         self.add_node(newnode)
         return newnode

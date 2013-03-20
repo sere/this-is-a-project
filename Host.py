@@ -42,11 +42,9 @@ class Host(Node):
         ])
 
 
-    def __init__(self, name=None, ipaddr=None, Type='Data', x=50, y=50, ident=None, gui=None, ip=None):
-        if ip != None:
-            ipaddr = gui.search_for_node_with_class("IP_address", "ip", ip)
-        self.ipaddr = ipaddr 
+    def __init__(self, name=None, ipaddr=None, Type='Data', x=50, y=50, ident=None, gui=None):
         assert(ipaddr != None)
+        self.ipaddr = ipaddr 
         self.ip = self.ipaddr.getIp()
 	Node.__init__(self, name, Type, x, y, ident, gui)
 	self.find_neighbors_script = "./script_ip.sh"
@@ -89,7 +87,7 @@ class Host(Node):
                 classname = self.__class__.__name__
                 neigh = self.gui.search_for_node_with_class(classname, "ipaddr", ipaddr)
                 if neigh == None:
-                    neigh = self.gui.get_new_node(classname, "ip", ipaddr.getIp())
+                    neigh = self.gui.get_new_node(classname, "ipaddr", ipaddr)
                 self.gui.connect(self, neigh) 
 
 # vim: set et sts=4 sw=4:
