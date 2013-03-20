@@ -160,12 +160,20 @@ class Locator:
             self.draw_edge(conn[0].x, conn[0].y, conn[1].x, conn[1].y)
 
     def search_for_node(self, field, content):
-        # FIXME: multiple objects can be returned? Not if ident is unique
+        # FIXME: multiple objects can be returned?
         for node in self.NodeList:
             if field in node.__dict__.keys():
                 if str(node.__dict__[field]) == str(content):
                     return node
         return None
+
+    def search_for_node_with_class(self, classname, field, content):
+        for node in self.NodeList:
+            if field in node.__dict__.keys():
+                if str(node.__dict__[field]) == str(content):
+                    if node.__class__.__name__ == classname:
+                        return node
+        return None 
 
     def connection_exists(self, node1, node2):
         try:

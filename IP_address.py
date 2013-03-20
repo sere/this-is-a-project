@@ -47,6 +47,10 @@ class IP_address(Node):
     def getIp(self):
         return self.ip
 
+    def setIp(self, ip):
+        assert(ip != None)
+        self.ip = ip
+
 # this doesn't have to find neighbors
 
 # vim: set et sts=4 sw=4:

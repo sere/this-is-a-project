@@ -121,7 +121,6 @@ class Node:
         self.Label.set_text(self.__repr__())
         # Drop everything now; window hide will drop all textboxes
         window.hide_all()
-        pass
 
     def drop_changes(self, widget, textboxes):
         del textboxes[:]  
@@ -151,37 +150,17 @@ class Node:
             window.connect("hide", self.drop_changes, textboxes)
             window.show_all()
 
-    # It may be useful to redefine this in derived classes
+    # This method must be redefined in specific classes
     def node_clicked(self, widget, event):
-        # If right-click
-        if event.button == 3:
-            newmenu = gtk.Menu()
-            newitem = gtk.MenuItem('Find neighbors')
-            newmenu.append(newitem)
-            newitem.connect("button-press-event", self.find_neighbors)
-            newitem1 = gtk.MenuItem('Item 2')
-            newmenu.append(newitem1)
-            newmenu.show_all()
-            newmenu.popup(None, None, None, event.button, event.time)
+        pass
 
     def runProcess(self, exe):
         return subprocess.check_output(exe)
 
-    # This is most likely to be redefined in derived classes, as different
+    # This method must be redefined in derived classes, as different
     # categories may want to find neighbors with different criteria
     def find_neighbors(self, widget, event):
-        # Do something useful and rational, like searching for some
-        # specific method of the class. By now just fire the execution
-        # of a script and read the result. We assume by now that the
-        # output has already been filtered and contains only the id
-        # of the neighbor.
-        out = self.runProcess([self.find_neighbors_script])
-	for newid in str(out).strip().split():
-                neigh = self.gui.search_for_node("ident", newid)
-                if neigh == None:
-                    classname = self.__class__.__name__
-                    neigh = self.gui.get_new_node(classname, "ident", newid)
-        	self.gui.connect(self, neigh)
+        pass
 
     def __repr__(self):
         return str(self.ident)
