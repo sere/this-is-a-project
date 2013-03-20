@@ -45,7 +45,7 @@ class Person(Node):
 
     def __init__(self, name=None, surname='8', x=50, y=50, ident=None, gui=None):
         Node.__init__(self, name,'person', x, y, ident, gui)
-        self.surname = 8
+        self.surname = surname
         self.find_neighbors_script = "./script.sh"
 
     def node_clicked(self, widget, event):
