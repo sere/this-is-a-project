@@ -214,11 +214,13 @@ if __name__ == "__main__":
 
     NodeList = [
         Smiley(ident=counter.get(), name='very happy', Type='Data', x=50 , y=50, gui=app),
-        DNS_server(ident=counter.get(), name='happy', Type='App', x=150, y=100, gui=app),
-        WebServer(ident=counter.get(), name='server', Type='Data', x=250, y=200, gui=app),
         IP_address(ident=counter.get(), Type='Data', x=50, y=200, ip="192.168.0.1", gui=app),
         Person(ident=counter.get(), x=300, y=400, surname="9", gui=app),
         ]
+    NodeList.append( DNS_server(ident=counter.get(), name='happy', Type='App', ipaddr=NodeList.__getitem__(1), x=150, y=100, gui=app) )
+    NodeList.append( Host(ident=counter.get(), name='hosst', Type='Data', ipaddr=NodeList.__getitem__(1), x=200, y=200, gui=app) )
+    NodeList.append( WebServer(ident=counter.get(), name='server', Type='Data', host=NodeList.__getitem__(3), x=250, y=200, gui=app) )
+
     for node in NodeList :
         app.add_node(node)
 

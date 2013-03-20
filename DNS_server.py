@@ -6,7 +6,7 @@ from Node import *
 
 class DNS_server(Node):
 
-    features = ["ip"]
+    features = ["name", "ip"]
 
     tiny_pixbuf = gtk.gdk.pixbuf_new_from_xpm_data([
         "26 20 5 1",
@@ -39,9 +39,9 @@ class DNS_server(Node):
         ])
 
 
-    def __init__(self, name=None, ip="192.168.0.2", Type='Data', x=50, y=50, ident=None, gui=None):
-        self.ip = ip
-        assert(ip != None)
+    def __init__(self, ipaddr=None, name=None, Type='Data', x=50, y=50, ident=None, gui=None):
+        assert(ipaddr != None)
+        self.ip = ipaddr.getIp()
 	Node.__init__(self, name, Type, x, y, ident, gui)
 	self.find_neighbors_script = "./script.sh"
 

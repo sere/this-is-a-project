@@ -7,7 +7,7 @@ from Host import *
 
 class WebServer(Node):
 
-    features = ["name"]
+    features = ["name", "host"]
     
     tiny_pixbuf = gtk.gdk.pixbuf_new_from_xpm_data([
         "26 26 5 1",
@@ -16,6 +16,16 @@ class WebServer(Node):
         "o c yellow",
         "X c blue",
         "- c None",
+        "--------------------------",
+        "--------------------------",
+        "-w--w-w--w-wwwww--wwww----",
+        "-w--w-w--w-w------w---w---",
+        "-w--w-w--w-w------w---w---",
+        "--w--w--w--wwww---wwww----",
+        "--w--w--w--w------w---w---",
+        "--w--w--w--w------w---w---",
+        "---ww-ww---wwwww--wwww----",
+        "--------------------------",
         "--------------------------",
         "--------------------------",
         "--XXXX----XXX----X-----X--",
@@ -31,22 +41,14 @@ class WebServer(Node):
         "--------------------------",
         "--------------------------",
         "--------------------------",
-        "--------------------------",
-        "--------------------------",
-        "--------------------------",
-        "--------------------------",
-        "--------------------------",
-        "--------------------------",
-        "--------------------------",
-        "--------------------------",
-        "--------------------------",
-        "--------------------------",
         "--------------------------"
         ])
 
-    def __init__(self, name=None, Type='data',  x=50, y=50, ident=None, gui=None):
+    def __init__(self, name=None, Type='data', host=None, x=50, y=50, ident=None, gui=None):
         assert(name != None)
         self.name=name
+        assert(host != None)
+        self.host=host
         Node.__init__(self, name,'webserver', x, y, ident, gui)
         self.find_neighbors_script = "./script.sh"
 
