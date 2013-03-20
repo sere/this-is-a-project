@@ -3,13 +3,10 @@
 # Representation of a host
 #
 from Node import *
-from IP_address import *
 
-class Host(Node):
+class DNS_server(Node):
 
-    # ipaddr is an istance of the class IP_address, 
-    # while ip represents the "real" ip of the host
-    features = ["ipaddr", "ip"]
+    features = ["name", "ip"]
 
     tiny_pixbuf = gtk.gdk.pixbuf_new_from_xpm_data([
         "26 20 5 1",
@@ -22,12 +19,12 @@ class Host(Node):
         "-........................-",
         "-........................-",
         "-..XXXXXXXXXXXXXXXXXXXX..-",
-        "-..XXXXXXXXXXXXXXXXXXXX..-",
-        "-..XXXXXXXXXXXXXXXXXXXX..-",
-        "-..XXXXXXXXXXXXXXXXXXXX..-",
-        "-..XXXXXXXXXXXXXXXXXXXX..-",
-        "-..XXXXXXXXXXXXXXXXXXXX..-",
-        "-..XXXXXXXXXXXXXXXXXXXX..-",
+        "-..XXooXXXoXXXXoXXooooX..-",
+        "-..XXoXoXXooXXXoXoXXXXX..-",
+        "-..XXoXXoXoXoXXoXXooXXX..-",
+        "-..XXoXXoXoXXoXoXXXXXoX..-",
+        "-..XXoXoXXoXXXooXXXXXoX..-",
+        "-..XXooXXXoXXXXoXooooXX..-",
         "-..XXXXXXXXXXXXXXXXXXXX..-",
         "-........................-",
         "-........................-",
@@ -42,9 +39,8 @@ class Host(Node):
         ])
 
 
-    def __init__(self, name=None, ipaddr=None, Type='Data', x=50, y=50, ident=None, gui=None):
+    def __init__(self, ipaddr=None, name=None, Type='Data', x=50, y=50, ident=None, gui=None):
         assert(ipaddr != None)
-        self.ipaddr = ipaddr
         self.ip = ipaddr.getIp()
 	Node.__init__(self, name, Type, x, y, ident, gui)
 	self.find_neighbors_script = "./script.sh"
@@ -75,6 +71,6 @@ class Host(Node):
                 if neigh == None:
                     classname = self.__class__.__name__
                     neigh = self.gui.get_new_node(classname, "ident", newid)
-                self.gui.connect(self, neigh) 
-
+                self.gui.connect(self, neigh)
+ 
 # vim: set et sts=4 sw=4:
