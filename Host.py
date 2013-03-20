@@ -43,6 +43,8 @@ class Host(Node):
 
 
     def __init__(self, name=None, ipaddr=None, Type='Data', x=50, y=50, ident=None, gui=None):
+        if ipaddr == None:
+            ipaddr = gui.get_new_node("IP_address", None, None)
         assert(ipaddr != None)
         self.ipaddr = ipaddr 
         self.ip = self.ipaddr.getIp()

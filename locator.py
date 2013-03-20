@@ -193,7 +193,8 @@ class Locator:
         if field != 'ident':
             args_dict['ident'] = str(self.counter.get())
         # Set required field
-        args_dict[field] = content
+        if field != None:
+            args_dict[field] = content
         # Get new instance of requested class
         newnode = globals()[classname](**args_dict)
         assert(newnode != None)
