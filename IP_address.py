@@ -47,4 +47,6 @@ class IP_address(Node):
     def getIp(self):
         return self.ip
 
+# this doesn't have to find neighbors
+
 # vim: set et sts=4 sw=4:
