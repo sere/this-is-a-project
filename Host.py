@@ -94,6 +94,8 @@ class Host(Node):
     # Refresh host information with the current machine's
     def refresh_data(self, widget, event):
         out = self.runProcess([self.refresh_data_script, self.interface])
+        if out == "":
+            return
         self.ip = str(out).strip().split()[0]
         self.ipaddr.setIp(str(out).strip().split()[0])
         self.network = self.get_network(self.ip)
