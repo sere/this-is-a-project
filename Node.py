@@ -60,7 +60,7 @@ class Node:
 
 	self.dataPanel_label = gtk.Label("Dati")
 	self.dataPanel_label.set_justify(gtk.JUSTIFY_CENTER)
-	self.dataPanel_label.set_size_request(width=100, height=-1)
+	self.dataPanel_label.set_size_request(width=-1, height=-1)
 	self.dataPanel_label.set_line_wrap(True)
 	self.dataPanel.add(self.dataPanel_label)
 
@@ -103,7 +103,7 @@ class Node:
 	# Show features of node around object
 	newlabel = ""
 	for name in self.read_features:
-		newlabel = newlabel + " " + name + ":" + str(eval('self.' + name))
+		newlabel = newlabel + " " + name + ":" + str(eval('self.' + name)) + "\n"
 	self.dataPanel_label.set_label(newlabel)
 	self.dataPanel_label.show()
 	self.dataPanel.show()
