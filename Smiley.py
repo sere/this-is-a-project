@@ -70,7 +70,7 @@ class Smiley(Node):
                 neigh = self.gui.search_for_node("ident", newid)
                 if neigh == None:
                     classname = self.__class__.__name__
-                    neigh = self.gui.get_new_node(classname, "ident", newid)
+                    neigh = self.gui.get_new_node(classname, "ident", newid, self.x, self.y)
                 self.gui.connect(self, neigh)
 
 # vim: set et sts=4 sw=4:

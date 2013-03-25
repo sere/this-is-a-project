@@ -185,10 +185,12 @@ class Locator:
             return True
         return False
 
-    def get_new_node(self, classname, field, content):
+    def get_new_node(self, classname, field, content, x, y):
         # Set default values for new node
         # FIXME: automatically compute position for new object?
-        args_dict = {'name': 'New', 'x': 100, 'y': 100, 'gui': self}
+        x += 40
+        y += 40
+        args_dict = {'name': 'New', 'x': x, 'y': y, 'gui': self}
         # Handle unique identifier
         if field != 'ident':
             args_dict['ident'] = str(self.counter.get())
