@@ -45,8 +45,8 @@ class Smiley(Node):
         ])
 
 
-    def __init__(self, name=None, Type='Data', x=50, y=50, ident=None, gui=None):
-	Node.__init__(self, name, Type, x, y, ident, gui)
+    def __init__(self, name=None, x=50, y=50, ident=None, gui=None):
+	Node.__init__(self, name, "Smiley", x, y, ident, gui)
 	self.find_neighbors_script = "./script.sh"
 
     def node_clicked(self, widget, event):

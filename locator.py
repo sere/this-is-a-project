@@ -34,6 +34,7 @@ class Locator:
         self.Connections = []
 
         self.counter = counter
+        self.lock = thread.allocate_lock()
 
         window = gtk.Window(gtk.WINDOW_TOPLEVEL)
         window.set_default_size(self.WIDTH, self.HEIGHT)
@@ -135,10 +136,12 @@ class Locator:
                     node.move_on_layout(self.da, self.layout, x, y)
 
     def add_node(self, node):
-        self.lock = thread.allocate_lock()
+        self.add_node_bare(node)
+        node.put_on_layout(self.layout)
+
+    def add_node_bare(self, node):
         self.lock.acquire()
         self.NodeList.append(node)
-        node.put_on_layout(self.layout)
         self.lock.release()
 
     def get_foreground_gc(self):
@@ -214,6 +217,12 @@ class Locator:
         if node1 is node2:
             return
         assert(node1 != None and node2 != None)
+        # If nodes are not in the NodeList, just add them and
+        # be confident that they will put on their layout later
+        if node1 not in self.NodeList:
+            self.add_node_bare(node1)
+        if node2 not in self.NodeList:
+            self.add_node_bare(node2)
         assert(node1 in self.NodeList and node2 in self.NodeList)
         # Check if the connection already exists before creating a new one
         if not self.connection_exists(node1, node2):
@@ -232,17 +241,16 @@ if __name__ == "__main__":
     da = app.get_da()
 
     NodeList = [
-        Smiley(ident=counter.get(), name='very happy', Type='Data', x=50 , y=50, gui=app),
-        IP_address(ident=counter.get(), Type='Data', x=50, y=200, ip="192.168.0.1", gui=app),
+        Smiley(ident=counter.get(), name='Very Happy', x=50 , y=50, gui=app),
+        IP_address(ident=counter.get(), x=50, y=200, ip="192.168.0.1", gui=app),
         Person(ident=counter.get(), x=300, y=400, surname="9", gui=app),
         ]
-    NodeList.append( DNS_server(ident=counter.get(), name='happy', Type='App', ipaddr=NodeList.__getitem__(1), x=150, y=100, gui=app) )
-    NodeList.append( Host(ident=counter.get(), name='hosst', Type='Data', ipaddr=NodeList.__getitem__(1), x=200, y=200, gui=app) )
-    NodeList.append( WebServer(ident=counter.get(), name='server', Type='Data', host=NodeList.__getitem__(3), x=250, y=200, gui=app) )
+    NodeList.append( DNS_server(ident=counter.get(), name='DNSS', ipaddr=None, x=150, y=100, gui=app) )
+    NodeList.append( Host(ident=counter.get(), name='HOST', ipaddr=None, x=200, y=200, gui=app) )
+    NodeList.append( WebServer(ident=counter.get(), name='WEBSRV', host=None, x=250, y=200, gui=app) )
 
     for node in NodeList :
         app.add_node(node)
-    app.connect(NodeList.__getitem__(4), NodeList.__getitem__(1))
 
     # Gtk will forget about refreshing the DrawingArea while dragging and
     # dropping. Remind him every 70 milliseconds.

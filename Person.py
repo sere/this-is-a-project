@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# A most important resource in a network
+# Abstraction of a Person in a network
 #
 from Node import *
 
@@ -45,7 +45,7 @@ class Person(Node):
         ])
 
     def __init__(self, name=None, surname='8', x=50, y=50, ident=None, gui=None):
-        Node.__init__(self, name,'person', x, y, ident, gui)
+        Node.__init__(self, name, 'Person', x, y, ident, gui)
         self.surname = surname
         self.find_neighbors_script = "./script.sh"
 
