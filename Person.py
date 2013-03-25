@@ -76,7 +76,7 @@ class Person(Node):
                 neigh = self.gui.search_for_node("surname", newid)
                 if neigh == None:
                     classname = self.__class__.__name__
-                    neigh = self.gui.get_new_node(classname, "surname", newid)
+                    neigh = self.gui.get_new_node(classname, "surname", newid, self.x, self.y)
                 self.gui.connect(self, neigh)
 
 # vim: set et sts=4 sw=4:

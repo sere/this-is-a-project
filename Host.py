@@ -46,7 +46,7 @@ class Host(Node):
 
     def __init__(self, name=None, ipaddr=None, netmask="24", interface="wlan0", Type='Data', x=50, y=50, ident=None, gui=None):
         if ipaddr == None:
-            ipaddr = gui.get_new_node("IP_address", None, None)
+            ipaddr = gui.get_new_node("IP_address", None, None, self.x - 30, self.y)
         assert(ipaddr != None)
         self.ipaddr = ipaddr 
         self.ip = self.ipaddr.getIp()
@@ -103,12 +103,12 @@ class Host(Node):
         # Search for IP_address instance and eventually create a new one
         ipaddr = self.gui.search_for_node_with_class("IP_address", "ip", newid)
         if ipaddr == None:
-            ipaddr = self.gui.get_new_node("IP_address", "ip", newid)
+            ipaddr = self.gui.get_new_node("IP_address", "ip", newid, self.x - 30, self.y)
         # Create new host
         classname = self.__class__.__name__
         neigh = self.gui.search_for_node_with_class(classname, "ipaddr", ipaddr)
         if neigh == None:
-            neigh = self.gui.get_new_node(classname, "ipaddr", ipaddr)
+            neigh = self.gui.get_new_node(classname, "ipaddr", ipaddr, self.x, self.y)
         self.gui.connect(self, neigh)
 
     # Find up hosts
