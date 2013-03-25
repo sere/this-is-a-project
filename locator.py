@@ -6,6 +6,7 @@
 import pygtk
 pygtk.require('2.0')
 import gtk
+import thread
 
 from Counter import *
 from Smiley import *
@@ -134,8 +135,11 @@ class Locator:
                     node.move_on_layout(self.da, self.layout, x, y)
 
     def add_node(self, node):
+        self.lock = thread.allocate_lock()
+        self.lock.acquire()
         self.NodeList.append(node)
         node.put_on_layout(self.layout)
+        self.lock.release()
 
     def get_foreground_gc(self):
         self.style = self.layout.get_style()
