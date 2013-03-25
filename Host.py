@@ -47,6 +47,7 @@ class Host(Node):
     def __init__(self, name=None, ipaddr=None, netmask="24", interface="wlan0", Type='Data', x=50, y=50, ident=None, gui=None):
         if ipaddr == None:
             ipaddr = gui.get_new_node("IP_address", None, None, self.x - 30, self.y)
+            gui.connect(self, ipaddr)
         assert(ipaddr != None)
         self.ipaddr = ipaddr 
         self.ip = self.ipaddr.getIp()
@@ -112,6 +113,7 @@ class Host(Node):
         if neigh == None:
             neigh = self.gui.get_new_node(classname, "ipaddr", ipaddr, self.x, self.y)
         self.gui.connect(self, neigh)
+        self.gui.connect(neigh, ipaddr)
 
     # Find up hosts
     def find_up(self, widget, event):
