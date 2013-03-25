@@ -238,6 +238,7 @@ if __name__ == "__main__":
 
     for node in NodeList :
         app.add_node(node)
+    app.connect(NodeList.__getitem__(4), NodeList.__getitem__(1))
 
     # Gtk will forget about refreshing the DrawingArea while dragging and
     # dropping. Remind him every 70 milliseconds.
