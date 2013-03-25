@@ -8,8 +8,9 @@ from IP_address import *
 
 class Host(Node):
 
-    # ipaddr is an istance of the class IP_address, 
+    # ipaddr is an instance of the class IP_address,
     # while ip represents the "real" ip of the host
+    # we'll expose in the *features lists only ip
     read_features = ["ip", "netmask", "network", "interface"]
     features = ["ip", "netmask", "interface"]
 
@@ -44,9 +45,10 @@ class Host(Node):
         ])
 
 
-    def __init__(self, name=None, ipaddr=None, netmask="24", interface="wlan0", Type='Data', x=50, y=50, ident=None, gui=None):
+    def __init__(self, name=None, ipaddr=None, netmask="24", interface="wlan0", x=50, y=50, ident=None, gui=None):
+	Node.__init__(self, name, "Host", x, y, ident, gui)
         if ipaddr == None:
-            ipaddr = gui.get_new_node("IP_address", None, None, self.x - 30, self.y)
+            ipaddr = gui.get_new_node("IP_address", None, None, x - 30, y)
             gui.connect(self, ipaddr)
         assert(ipaddr != None)
         self.ipaddr = ipaddr 
@@ -54,7 +56,6 @@ class Host(Node):
         self.network = self.get_network(self.ip)
         self.netmask = netmask
         self.interface = interface
-	Node.__init__(self, name, Type, x, y, ident, gui)
 	self.find_neighbors_script = "./script_ip.sh"
         self.refresh_data_script = "./refresh_data.sh"
         self.find_up_script = "./get_up.sh"
