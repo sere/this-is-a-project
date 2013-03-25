@@ -5,3 +5,6 @@
 
 clean:
 	rm -f *{~,.pyc}
+
+pclean: clean
+	rm -f *.{orig,rej}
