@@ -9,6 +9,7 @@ import gtk
 import thread
 
 from Counter import *
+from Connection import *
 from Smiley import *
 from Host import *
 from Person import *
@@ -32,6 +33,7 @@ class Locator:
     def __init__(self, counter):
         self.NodeList = []
         self.Connections = []
+        self.Connections_obj = []
 
         self.counter = counter
         self.lock = thread.allocate_lock()
@@ -226,6 +228,8 @@ class Locator:
         assert(node1 in self.NodeList and node2 in self.NodeList)
         # Check if the connection already exists before creating a new one
         if not self.connection_exists(node1, node2):
+            assert(node1.ident != node2.ident)
+            self.Connections_obj.append(Connection(node1.ident, node2.ident))
             self.Connections.append([node1, node2])
 
 #-------------------------------------------------------------------------------
