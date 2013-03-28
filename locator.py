@@ -213,7 +213,24 @@ class Locator:
         return newnode
 
     def new_node_request(self, widget, event, classname):
-        self.get_new_node(classname, "ident", self.counter.get())    
+        self.get_new_node(classname, "ident", self.counter.get(), 30, 30)
+
+    def has_priority_over(self, class1, class2):
+        classes_prio = ["IP_address", "Host", "WebServer", "DNS_server"]
+        assert(class1 in classes_prio and class2 in classes_prio)
+        if classes_prio.index(class1) == classes_prio.index(class2):
+            return True
+        if classes_prio.index(class1) < classes_prio.index(class2):
+            return True
+        else:
+            return False
+
+    def get_connection_with_priority(self, node1, node2):
+        if self.has_priority_over(node1.__class__.__name__,
+                                  node2.__class__.__name__):
+            return (node1, node2)
+        else:
+            return (node2, node1)
 
     def connect(self, node1, node2):
         if node1 is node2:
@@ -229,6 +246,8 @@ class Locator:
         # Check if the connection already exists before creating a new one
         if not self.connection_exists(node1, node2):
             assert(node1.ident != node2.ident)
+            (node1, node2) = self.get_connection_with_priority(node1, node2)
+            print node1.__class__.__name__, node2.__class__.__name__
             self.Connections_obj.append(Connection(node1.ident, node2.ident))
             self.Connections.append([node1, node2])
 

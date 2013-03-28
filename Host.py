@@ -113,8 +113,8 @@ class Host(Node):
         neigh = self.gui.search_for_node_with_class(classname, "ipaddr", ipaddr)
         if neigh == None:
             neigh = self.gui.get_new_node(classname, "ipaddr", ipaddr, self.x, self.y)
-        self.gui.connect(self, neigh)
         self.gui.connect(neigh, ipaddr)
+        self.gui.connect(self, neigh)
 
     # Find up hosts
     def find_up(self, widget, event):
