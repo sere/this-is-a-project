@@ -51,6 +51,15 @@ class Locator:
         button_host.connect("button-press-event", self.new_node_request, "Host")
         menu_vbox.pack_start(button_host, False, True, 5)
         button_host.show()
+        # FIXME: use menu here?
+        button_save = gtk.Button(label="Save")
+        button_save.connect("button-press-event", self.save)
+        menu_vbox.pack_start(button_save, False, True, 5)
+        button_save.show()
+        button_load = gtk.Button(label="Load")
+        button_load.connect("button-press-event", self.load)
+        menu_vbox.pack_start(button_load, False, True, 5)
+        button_load.show()
         menu_vbox.show()
         # Create hbox for status
         status_hbox = gtk.HBox(False, 0)
@@ -136,6 +145,12 @@ class Locator:
             for node in self.NodeList :
                 if id(node) == node_id :
                     node.move_on_layout(self.da, self.layout, x, y)
+
+    def save(self, widget, event):
+        pass
+
+    def load(self, widget, event):
+        pass
 
     def add_node(self, node):
         self.add_node_bare(node)
