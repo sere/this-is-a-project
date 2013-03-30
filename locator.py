@@ -263,7 +263,9 @@ class Locator:
             assert(node1.ident != node2.ident)
             (node1, node2) = self.get_connection_with_priority(node1, node2)
             print node1.__class__.__name__, node2.__class__.__name__
-            self.Connections_obj.append(Connection(node1.ident, node2.ident))
+            self.Connections_obj.append(Connection(node1.ident, node2.ident,
+                                                   node1.__class__.__name__,
+                                                   node2.__class__.__name__ ))
             self.Connections.append([node1, node2])
 
 #-------------------------------------------------------------------------------
