@@ -13,4 +13,7 @@ class Connection:
         self.id1 = id1
         self.id2 = id2
 
+    def get(self):
+        return (self.id1, self.id2)
+
 # vim: set et sts=4 sw=4:
