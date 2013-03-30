@@ -8,6 +8,14 @@ pygtk.require('2.0')
 import gtk
 import thread
 
+# FIXME: warn user if the sqlalchemy package has not been installed
+import sqlalchemy
+from sqlalchemy.ext.declarative import declarative_base
+# FIXME: most horrible thing EVER, is there another way to do this?
+Base = declarative_base()
+from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker
+
 from Counter import *
 from Connection import *
 from Smiley import *
@@ -147,10 +155,37 @@ class Locator:
                     node.move_on_layout(self.da, self.layout, x, y)
 
     def save(self, widget, event):
-        pass
+        # FIXME: let user choose the database name
+        # FIXME: link the "echo" parameter to a "verbose" option
+        # This operation is atomic, as the user may want to save different
+        # graphs on different sqlite databases
+        engine = create_engine('sqlite:///locator', echo=True)
+        Base.metadata.create_all(engine)
+        Session = sessionmaker(bind=engine)
+        session = Session()
+        # We assume that the two connection lists are equal in length
+        # and that elements in the two lists correspond
+        for c_id, c_ref in zip(self.Connections_obj, self.Connections):
+            (node1, node2) = (c_ref[0], c_ref[1])
+            print "Saving", node1.__repr__(), node2.__repr__()
+            # Merge will create a new object or refresh the existing one;
+            # this is more expensive, but will avoid exceptions
+            session.merge(c_id)
+        session.commit()
+        session.close()
 
     def load(self, widget, event):
-        pass
+        # FIXME: let user choose the database
+        # FIXME: link the "echo" parameter to a "verbose" option
+        # This operation is atomic, as the user may want to load different
+        # graphs from different databases
+        engine = create_engine('sqlite:///locator', echo=True)
+        Base.metadata.create_all(engine)
+        Session = sessionmaker(bind=engine)
+        session = Session()
+        for element in session.query(Connection).all():
+            print "Loading", element.get_id()[0], element.get_id()[1]
+        session.close()
 
     def add_node(self, node):
         self.add_node_bare(node)
