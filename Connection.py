@@ -2,13 +2,21 @@
 #
 # Abstraction of the connection between two Node objects
 #
+# FIXME: this is still part of the locator.py horror, is there
+#        a better way of doing this?
+from locator import Base
+from sqlalchemy import Column, Integer, String
 
-class Connection:
+class Connection(Base):
+    __tablename__ = 'connection'
 
-    id1 = None
-    id2 = None
-    class1 = None
-    class2 = None
+    # Multiple definitions of the primary_key attribute as True,
+    # in the sqlite dialect, make a composite primary key, which
+    # is what we want here
+    id1 = Column(String, primary_key=True)
+    id2 = Column(String, primary_key=True)
+    class1 = Column(String)
+    class2 = Column(String)
 
     def __init__(self, id1, id2, class1, class2):
         assert(id1 != None and id2 != None)
