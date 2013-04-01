@@ -5,8 +5,17 @@
 import os, threading
 from Node import *
 from IP_address import *
+from locator import Base
+from sqlalchemy import Column, Integer, String
 
 class Host(Node):
+    __tablename__ = 'host'
+
+    ident = Column(String, primary_key=True)
+    netmask = Column(String)
+    interface = Column(String)
+    x = Column(Integer)
+    y = Column(Integer)
 
     # ipaddr is an instance of the class IP_address,
     # while ip represents the "real" ip of the host

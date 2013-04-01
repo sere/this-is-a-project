@@ -3,8 +3,16 @@
 # Abstraction of a DNS server
 #
 from Node import *
+from locator import Base
+from sqlalchemy import Column, Integer, String
 
 class DNS_server(Node):
+    __tablename__ = 'dns_server'
+
+    ident = Column(String, primary_key=True)
+    name = Column(String)
+    x = Column(Integer)
+    y = Column(Integer)
 
     read_features = ["name", "ip"]
     features = ["name", "ip"]
