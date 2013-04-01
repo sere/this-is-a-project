@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# Representation of a host
+# Representation of an IP address
 #
 from Node import *
 from locator import Base
@@ -49,10 +49,10 @@ class IP_address(Node):
         ])
 
 
-    def __init__(self, name=None, ip="192.168.0.2", Type='IP', x=50, y=50, ident=None, gui=None):
-        self.ip = ip
+    def __init__(self, name=None, ip="192.168.0.2", x=50, y=50, ident=None, gui=None):
         assert(ip != None)
-	Node.__init__(self, name, Type, x, y, ident, gui)
+        self.ip = ip
+	Node.__init__(self, name, 'IP', x, y, ident, gui)
 
     def getIp(self):
         return self.ip
