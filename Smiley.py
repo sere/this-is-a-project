@@ -3,8 +3,16 @@
 # A most important resource in a network
 #
 from Node import *
+from locator import Base
+from sqlalchemy import Column, Integer, String
 
 class Smiley(Node):
+    __tablename__ = 'smiley'
+
+    ident = Column(String, primary_key=True)
+    name = Column(String)
+    x = Column(Integer)
+    y = Column(Integer)
 
     read_features = ["name"]
     features = ["name"]
