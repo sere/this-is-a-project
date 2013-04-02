@@ -4,16 +4,17 @@
 #
 from Node import *
 from locator import Base
-from sqlalchemy import Column, Integer, String
+if Base != None:
+    from sqlalchemy import Column, Integer, String
 
 class Person(Node):
-    __tablename__ = 'person'
-
-    ident = Column(String, primary_key=True)
-    name = Column(String)
-    surname = Column(String)
-    x = Column(Integer)
-    y = Column(Integer)
+    if Base != None:
+        __tablename__ = 'person'
+        ident = Column(String, primary_key=True)
+        name = Column(String)
+        surname = Column(String)
+        x = Column(Integer)
+        y = Column(Integer)
 
     read_features = ["name", "surname"]
     features = ["name", "surname"]

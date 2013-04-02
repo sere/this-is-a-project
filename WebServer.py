@@ -5,15 +5,16 @@
 from Node import *
 from Host import *
 from locator import Base
-from sqlalchemy import Column, Integer, String
+if Base != None:
+    from sqlalchemy import Column, Integer, String
 
 class WebServer(Node):
-    __tablename__ = 'webserver'
-
-    ident = Column(String, primary_key=True)
-    name = Column(String)
-    x = Column(Integer)
-    y = Column(Integer)
+    if Base != None:
+        __tablename__ = 'webserver'
+        ident = Column(String, primary_key=True)
+        name = Column(String)
+        x = Column(Integer)
+        y = Column(Integer)
 
     read_features = ["name", "host"]
     features = ["name", "host"]
