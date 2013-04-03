@@ -4,11 +4,11 @@
 #
 from Node import *
 from locator import Base
-if Base != None:
+if Base != object.__class__:
     from sqlalchemy import Column, Integer, String
 
-class DNS_server(Node):
-    if Base != None:
+class DNS_server(Node, Base):
+    if Base != object.__class__:
         __tablename__ = 'dns_server'
         ident = Column(String, primary_key=True)
         name = Column(String)

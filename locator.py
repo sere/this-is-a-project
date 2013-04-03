@@ -15,7 +15,7 @@ except ImportError:
           "The save/load features won't be available."
     # Define however the Base symbol so that all classes know that they
     # mustn't use the sqlalchemy features
-    Base = None
+    Base = object.__class__
 else:
     from sqlalchemy.ext.declarative import declarative_base
     # FIXME: most horrible thing EVER, is there another way to do this?
@@ -66,7 +66,7 @@ class Locator:
         button_host.connect("button-press-event", self.new_node_request, "Host")
         menu_vbox.pack_start(button_host, False, True, 5)
         button_host.show()
-        if Base != None:
+        if Base != object.__class__:
             # FIXME: use menu here?
             button_save = gtk.Button(label="Save")
             button_save.connect("button-press-event", self.save)

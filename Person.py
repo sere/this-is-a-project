@@ -4,11 +4,11 @@
 #
 from Node import *
 from locator import Base
-if Base != None:
+if Base != object.__class__:
     from sqlalchemy import Column, Integer, String
 
-class Person(Node):
-    if Base != None:
+class Person(Node, Base):
+    if Base != object.__class__:
         __tablename__ = 'person'
         ident = Column(String, primary_key=True)
         name = Column(String)
