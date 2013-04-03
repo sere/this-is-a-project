@@ -99,6 +99,11 @@ class Node:
         layout.move(self.Label_EventBox, self.x-15, self.y+28)
 	layout.move(self.dataPanel, self.x+30, self.y-30)
 
+    def remove_layout(self, layout):
+        layout.remove(self.Image_EventBox)
+        layout.remove(self.Label_EventBox)
+        layout.remove(self.dataPanel)
+
     def show_features(self, widget, event):
 	# Show features of node around object
 	newlabel = ""

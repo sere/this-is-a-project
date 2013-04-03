@@ -6,6 +6,9 @@
 import pygtk
 pygtk.require('2.0')
 import gtk
+# FIXME: yes, this is horrible; yes, it must be fixed ASAP
+import warnings
+warnings.simplefilter('ignore', Warning)
 import thread
 
 try:
@@ -174,13 +177,22 @@ class Locator:
         # We assume that the two connection lists are equal in length
         # and that elements in the two lists correspond
         for c_id, c_ref in zip(self.Connections_obj, self.Connections):
+            assert(c_ref[0].ident == c_id.id1 and c_ref[1].ident == c_id.id2)
             (node1, node2) = (c_ref[0], c_ref[1])
             print "Saving", node1.__repr__(), node2.__repr__()
             # Merge will create a new object or refresh the existing one;
             # this is more expensive, but will avoid exceptions
             session.merge(c_id)
+            session.merge(c_ref[0])
+            session.merge(c_ref[1])
         session.commit()
         session.close()
+
+    def find_node_id(self, id):
+        for node in self.NodeList:
+            if node.ident == id:
+                return node
+        return None
 
     def load(self, widget, event):
         # FIXME: let user choose the database
@@ -191,8 +203,47 @@ class Locator:
         Base.metadata.create_all(engine)
         Session = sessionmaker(bind=engine)
         session = Session()
+        del self.Connections[:]
+        del self.Connections_obj[:]
+        for node in self.NodeList:
+            node.remove_layout(self.layout)
+        del self.NodeList[:]
         for element in session.query(Connection).all():
-            print "Loading", element.get_id()[0], element.get_id()[1]
+            ident1 = element.get_id()[0]
+            ident2 = element.get_id()[1]
+            print "Loading", ident1, ident2
+            class1 = element.get_class()[0]
+            class2 = element.get_class()[1]
+            self.Connections_obj.append(element)
+            node1 = self.find_node_id(ident1)
+            if node1 == None:
+                element1 = eval("session.query(" + class1 + ").filter_by(ident=" + ident1 + ").first()")
+                dict1 = element1.__dict__
+                del dict1['_sa_instance_state']
+                dict1["gui"] = self
+            node2 = self.find_node_id(ident2)
+            if node2 == None:
+                element2 = eval("session.query(" + class2 + ").filter_by(ident=" + ident2 + ").first()")
+                dict2 = element2.__dict__
+                del dict2['_sa_instance_state']
+                dict2["gui"] = self
+            if node1 == None:
+                # Handle priorities while instatiating nodes
+                node1 = globals()[class1](**dict1)
+                self.add_node(node1)
+            if node2 == None:
+                if self.has_priority_over(class1, class2):
+                    key = None
+                    if class1 == "IP_address":
+                        key = "ipaddr"
+                    else:
+                        if class1 == "Host":
+                            key = "host"
+                    assert(key != None)
+                    dict2[key] = node1
+                node2 = globals()[class2](**dict2)
+                self.add_node(node2)
+            self.Connections.append([node1, node2])
         session.close()
 
     def add_node(self, node):
