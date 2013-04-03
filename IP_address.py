@@ -4,16 +4,17 @@
 #
 from Node import *
 from locator import Base
-from sqlalchemy import Column, Integer, String
+if Base != object.__class__:
+    from sqlalchemy import Column, Integer, String
 
-class IP_address(Node):
-    __tablename__ = 'ipaddr'
-
-    ident = Column(String, primary_key=True)
-    name = Column(String)
-    ip = Column(String)
-    x = Column(Integer)
-    y = Column(Integer)
+class IP_address(Node, Base):
+    if Base != object.__class__:
+        __tablename__ = 'ipaddr'
+        ident = Column(String, primary_key=True)
+        name = Column(String)
+        ip = Column(String)
+        x = Column(Integer)
+        y = Column(Integer)
 
     read_features = ["ip"]
     features = []

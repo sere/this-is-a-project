@@ -8,13 +8,20 @@ pygtk.require('2.0')
 import gtk
 import thread
 
-# FIXME: warn user if the sqlalchemy package has not been installed
-import sqlalchemy
-from sqlalchemy.ext.declarative import declarative_base
-# FIXME: most horrible thing EVER, is there another way to do this?
-Base = declarative_base()
-from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker
+try:
+    import sqlalchemy
+except ImportError:
+    print "WARNING: no sqlalchemy library found.\n", \
+          "The save/load features won't be available."
+    # Define however the Base symbol so that all classes know that they
+    # mustn't use the sqlalchemy features
+    Base = object.__class__
+else:
+    from sqlalchemy.ext.declarative import declarative_base
+    # FIXME: most horrible thing EVER, is there another way to do this?
+    Base = declarative_base()
+    from sqlalchemy import create_engine
+    from sqlalchemy.orm import sessionmaker
 
 from Counter import *
 from Connection import *
@@ -59,15 +66,16 @@ class Locator:
         button_host.connect("button-press-event", self.new_node_request, "Host")
         menu_vbox.pack_start(button_host, False, True, 5)
         button_host.show()
-        # FIXME: use menu here?
-        button_save = gtk.Button(label="Save")
-        button_save.connect("button-press-event", self.save)
-        menu_vbox.pack_start(button_save, False, True, 5)
-        button_save.show()
-        button_load = gtk.Button(label="Load")
-        button_load.connect("button-press-event", self.load)
-        menu_vbox.pack_start(button_load, False, True, 5)
-        button_load.show()
+        if Base != object.__class__:
+            # FIXME: use menu here?
+            button_save = gtk.Button(label="Save")
+            button_save.connect("button-press-event", self.save)
+            menu_vbox.pack_start(button_save, False, True, 5)
+            button_save.show()
+            button_load = gtk.Button(label="Load")
+            button_load.connect("button-press-event", self.load)
+            menu_vbox.pack_start(button_load, False, True, 5)
+            button_load.show()
         menu_vbox.show()
         # Create hbox for status
         status_hbox = gtk.HBox(False, 0)

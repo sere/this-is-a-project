@@ -4,15 +4,16 @@
 #
 from Node import *
 from locator import Base
-from sqlalchemy import Column, Integer, String
+if Base != object.__class__:
+    from sqlalchemy import Column, Integer, String
 
-class DNS_server(Node):
-    __tablename__ = 'dns_server'
-
-    ident = Column(String, primary_key=True)
-    name = Column(String)
-    x = Column(Integer)
-    y = Column(Integer)
+class DNS_server(Node, Base):
+    if Base != object.__class__:
+        __tablename__ = 'dns_server'
+        ident = Column(String, primary_key=True)
+        name = Column(String)
+        x = Column(Integer)
+        y = Column(Integer)
 
     read_features = ["name", "ip"]
     features = ["name", "ip"]

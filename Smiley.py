@@ -4,15 +4,16 @@
 #
 from Node import *
 from locator import Base
-from sqlalchemy import Column, Integer, String
+if Base != object.__class__:
+    from sqlalchemy import Column, Integer, String
 
-class Smiley(Node):
-    __tablename__ = 'smiley'
-
-    ident = Column(String, primary_key=True)
-    name = Column(String)
-    x = Column(Integer)
-    y = Column(Integer)
+class Smiley(Node, Base):
+    if Base != object.__class__:
+        __tablename__ = 'smiley'
+        ident = Column(String, primary_key=True)
+        name = Column(String)
+        x = Column(Integer)
+        y = Column(Integer)
 
     read_features = ["name"]
     features = ["name"]
