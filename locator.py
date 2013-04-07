@@ -35,6 +35,10 @@ from IP_address import *
 from WebServer import *
 from DNS_server import *
 
+MappedClasses = ["Smiley", "Host", "Person", \
+                 "IP_address", "WebServer", \
+                 "DNS_server"]
+
 # Drag'n'Drop
 TARGET_TYPE_NDDE = 80
 toCanvas = [ ( "node_move", 0, TARGET_TYPE_NDDE ),]
@@ -185,6 +189,9 @@ class Locator:
             session.merge(c_id)
             session.merge(c_ref[0])
             session.merge(c_ref[1])
+        # Attempt a merge of all nodes to save also isolated ones
+        for ref in self.NodeList:
+            session.merge(ref)
         session.commit()
         session.close()
 
@@ -244,6 +251,17 @@ class Locator:
                 node2 = globals()[class2](**dict2)
                 self.add_node(node2)
             self.Connections.append([node1, node2])
+        # Handle retrieval of isolated nodes
+        session.close()
+        session = Session()
+        for c in MappedClasses:
+            for element in eval("session.query(" + c + ").all()"):
+                dictionary = element.__dict__
+                del dictionary['_sa_instance_state']
+                dictionary['gui'] = self
+                if not self.find_node_id(element.ident):
+                    node = globals()[c](**dictionary)
+                    self.add_node(node)
         session.close()
 
     def add_node(self, node):
