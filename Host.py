@@ -5,7 +5,7 @@
 import os, threading
 from Node import *
 from IP_address import *
-from locator import Base
+from locator import Base, simulate
 if Base != object.__class__:
     from sqlalchemy import Column, Integer, String
 
@@ -69,6 +69,7 @@ class Host(Node, Base):
 	self.find_neighbors_script = "./script_ip.sh"
         self.refresh_data_script = "./refresh_data.sh"
         self.find_up_script = "./get_up.sh"
+        self.find_up_script_real = "./get_up_real.sh"
 
     def get_network(self, ip):
         return ".".join(ip.split(".")[:-1]) + ".0"
@@ -134,7 +135,10 @@ class Host(Node, Base):
         def my_thread(obj):
             # FIXME: locking!
             print "Exploring " + self.network + "/" + self.netmask + "..."
-            out = obj.runProcess([self.find_up_script, self.network, self.netmask])
+            if simulate:
+                out = obj.runProcess([self.find_up_script, self.network, self.netmask])
+            else:
+                out = obj.runProcess([self.find_up_script_real, self.network, self.netmask])
             print "... done."
             for newip in str(out).strip().split():
                 print "Found " + newip

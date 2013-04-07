@@ -26,6 +26,10 @@ else:
     from sqlalchemy import create_engine
     from sqlalchemy.orm import sessionmaker
 
+import argparse
+verbose = False
+simulate = False
+
 from Counter import *
 from Connection import *
 from Smiley import *
@@ -171,10 +175,7 @@ class Locator:
 
     def save(self, widget, event):
         # FIXME: let user choose the database name
-        # FIXME: link the "echo" parameter to a "verbose" option
-        # This operation is atomic, as the user may want to save different
-        # graphs on different sqlite databases
-        engine = create_engine('sqlite:///locator', echo=True)
+        engine = create_engine('sqlite:///locator', echo=verbose)
         Base.metadata.create_all(engine)
         Session = sessionmaker(bind=engine)
         session = Session()
@@ -203,10 +204,7 @@ class Locator:
 
     def load(self, widget, event):
         # FIXME: let user choose the database
-        # FIXME: link the "echo" parameter to a "verbose" option
-        # This operation is atomic, as the user may want to load different
-        # graphs from different databases
-        engine = create_engine('sqlite:///locator', echo=True)
+        engine = create_engine('sqlite:///locator', echo=verbose)
         Base.metadata.create_all(engine)
         Session = sessionmaker(bind=engine)
         session = Session()
@@ -387,6 +385,17 @@ def refresh_drawing_area (da):
     return True
 
 if __name__ == "__main__":
+    # Handle command-line options
+    parser = argparse.ArgumentParser()
+    parser.add_argument("-v", "--verbose", help="increase output verbosity",
+                        action="store_true")
+    parser.add_argument("-s", "--simulate", help="use simulation scripts",
+                        action="store_true")
+    args = parser.parse_args()
+
+    verbose = args.verbose
+    simulate = args.simulate
+
     counter = Counter()
     app = Locator(counter)
     # Grab a reference on the DrawingArea
