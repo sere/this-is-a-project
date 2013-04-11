@@ -77,6 +77,10 @@ class Locator:
         button_host.connect("button-press-event", self.new_node_request, "Host")
         menu_vbox.pack_start(button_host, False, True, 5)
         button_host.show()
+        button_clear = gtk.Button(label="Clear")
+        button_clear.connect("button-press-event", self.remove_all)
+        menu_vbox.pack_start(button_clear, False, True, 5)
+        button_clear.show()
         if Base != object.__class__:
             # FIXME: use menu here?
             button_save = gtk.Button(label="Save")
@@ -179,6 +183,10 @@ class Locator:
         Base.metadata.create_all(engine)
         Session = sessionmaker(bind=engine)
         session = Session()
+        # Drop all tables before saving
+        # FIXME: this is not very efficient
+        for tbl in reversed(Base.metadata.sorted_tables):
+            engine.execute(tbl.delete())
         # We assume that the two connection lists are equal in length
         # and that elements in the two lists correspond
         for c_id, c_ref in zip(self.Connections_obj, self.Connections):
@@ -202,17 +210,22 @@ class Locator:
                 return node
         return None
 
+    def remove_all(self, widget=None, event=None):
+        del self.Connections[:]
+        del self.Connections_obj[:]
+        # FIXME: efficiency issue here (local copy of potentially
+        #        a huge number of elements)
+        orig_NodeList = list(self.NodeList)
+        for node in orig_NodeList:
+            self.remove_node(node)
+
     def load(self, widget, event):
         # FIXME: let user choose the database
         engine = create_engine('sqlite:///locator', echo=verbose)
         Base.metadata.create_all(engine)
         Session = sessionmaker(bind=engine)
         session = Session()
-        del self.Connections[:]
-        del self.Connections_obj[:]
-        for node in self.NodeList:
-            node.remove_layout(self.layout)
-        del self.NodeList[:]
+        self.remove_all()
         for element in session.query(Connection).all():
             ident1 = element.get_id()[0]
             ident2 = element.get_id()[1]
@@ -263,8 +276,23 @@ class Locator:
         session.close()
 
     def add_node(self, node):
-        self.add_node_bare(node)
+        if node not in self.NodeList:
+            self.add_node_bare(node)
         node.put_on_layout(self.layout)
+
+    def remove_node(self, node):
+        assert(node in self.NodeList)
+        self.lock.acquire()
+        self.NodeList.remove(node)
+        self.lock.release()
+        assert(node not in self.NodeList)
+        node.remove_layout(self.layout)
+
+    def remove_node_connections(self, node):
+        for connection in self.Connections:
+            if node in connection:
+                self.Connections.remove(connection)
+                self.Connections_obj.remove(connection)
 
     def add_node_bare(self, node):
         self.lock.acquire()
