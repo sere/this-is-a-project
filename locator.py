@@ -164,7 +164,7 @@ class Locator:
         assert(table != None and layout != None)
         return table
 
-    def do_expose(self, event, w):
+    def do_expose(self, event=None, w=None):
         self.get_foreground_gc()
         self.draw_grid(20, self.lwidth, self.lheight)
         self.draw_connections()
@@ -210,6 +210,10 @@ class Locator:
                 return node
         return None
 
+    def refresh_panel(self):
+        self.layout.bin_window.clear()
+        self.do_expose()
+
     def remove_all(self, widget=None, event=None):
         del self.Connections[:]
         del self.Connections_obj[:]
@@ -218,6 +222,7 @@ class Locator:
         orig_NodeList = list(self.NodeList)
         for node in orig_NodeList:
             self.remove_node(node)
+        self.refresh_panel()
 
     def load(self, widget, event):
         # FIXME: let user choose the database
@@ -286,13 +291,14 @@ class Locator:
         self.NodeList.remove(node)
         self.lock.release()
         assert(node not in self.NodeList)
-        node.remove_layout(self.layout)
+        node.remove_layout(self.layout) 
 
     def remove_node_connections(self, node):
         for connection in self.Connections:
             if node in connection:
                 self.Connections.remove(connection)
                 self.Connections_obj.remove(connection)
+        self.refresh_panel()
 
     def add_node_bare(self, node):
         self.lock.acquire()
