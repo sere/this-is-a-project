@@ -276,8 +276,7 @@ class Locator:
         session.close()
 
     def add_node(self, node):
-        if node not in self.NodeList:
-            self.add_node_bare(node)
+        self.add_node_bare(node)
         node.put_on_layout(self.layout)
 
     def remove_node(self, node):
@@ -299,7 +298,8 @@ class Locator:
 
     def add_node_bare(self, node):
         self.lock.acquire()
-        self.NodeList.append(node)
+        if node not in self.NodeList:
+            self.NodeList.append(node)
         self.lock.release()
 
     def get_foreground_gc(self):
@@ -394,10 +394,8 @@ class Locator:
         assert(node1 != None and node2 != None)
         # If nodes are not in the NodeList, just add them and
         # be confident that they will put on their layout later
-        if node1 not in self.NodeList:
-            self.add_node_bare(node1)
-        if node2 not in self.NodeList:
-            self.add_node_bare(node2)
+        self.add_node_bare(node1)
+        self.add_node_bare(node2)
         assert(node1 in self.NodeList and node2 in self.NodeList)
         # Check if the connection already exists before creating a new one
         if not self.connection_exists(node1, node2):
