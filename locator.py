@@ -217,11 +217,11 @@ class Locator:
     def remove_all(self, widget=None, event=None):
         del self.Connections[:]
         del self.Connections_obj[:]
-        # FIXME: efficiency issue here (local copy of potentially
-        #        a huge number of elements)
-        orig_NodeList = list(self.NodeList)
-        for node in orig_NodeList:
-            self.remove_node(node)
+        i = 0
+        length = len(self.NodeList)
+        while i < length:
+            self.remove_node(self.NodeList[0])
+            i += 1
         self.refresh_panel()
 
     def load(self, widget, event):
@@ -281,8 +281,7 @@ class Locator:
         session.close()
 
     def add_node(self, node):
-        if node not in self.NodeList:
-            self.add_node_bare(node)
+        self.add_node_bare(node)
         node.put_on_layout(self.layout)
 
     def remove_node(self, node):
@@ -294,15 +293,19 @@ class Locator:
         node.remove_layout(self.layout) 
 
     def remove_node_connections(self, node):
-        for connection in self.Connections:
-            if node in connection:
+        i = 0
+        length = len(self.Connections)
+        while i < length:
+            if node in Connections[0]:
                 self.Connections.remove(connection)
                 self.Connections_obj.remove(connection)
+            i += 1
         self.refresh_panel()
 
     def add_node_bare(self, node):
         self.lock.acquire()
-        self.NodeList.append(node)
+        if node not in self.NodeList:
+            self.NodeList.append(node)
         self.lock.release()
 
     def get_foreground_gc(self):
@@ -397,10 +400,8 @@ class Locator:
         assert(node1 != None and node2 != None)
         # If nodes are not in the NodeList, just add them and
         # be confident that they will put on their layout later
-        if node1 not in self.NodeList:
-            self.add_node_bare(node1)
-        if node2 not in self.NodeList:
-            self.add_node_bare(node2)
+        self.add_node_bare(node1)
+        self.add_node_bare(node2)
         assert(node1 in self.NodeList and node2 in self.NodeList)
         # Check if the connection already exists before creating a new one
         if not self.connection_exists(node1, node2):
