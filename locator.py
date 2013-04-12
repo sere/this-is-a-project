@@ -213,11 +213,11 @@ class Locator:
     def remove_all(self, widget=None, event=None):
         del self.Connections[:]
         del self.Connections_obj[:]
-        # FIXME: efficiency issue here (local copy of potentially
-        #        a huge number of elements)
-        orig_NodeList = list(self.NodeList)
-        for node in orig_NodeList:
-            self.remove_node(node)
+        i = 0
+        length = len(self.NodeList)
+        while i < length:
+            self.remove_node(self.NodeList[0])
+            i += 1
 
     def load(self, widget, event):
         # FIXME: let user choose the database
@@ -289,10 +289,13 @@ class Locator:
         node.remove_layout(self.layout)
 
     def remove_node_connections(self, node):
-        for connection in self.Connections:
-            if node in connection:
+        i = 0
+        length = len(self.Connections)
+        while i < length:
+            if node in Connections[0]:
                 self.Connections.remove(connection)
                 self.Connections_obj.remove(connection)
+            i += 1
 
     def add_node_bare(self, node):
         self.lock.acquire()
