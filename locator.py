@@ -284,6 +284,16 @@ class Locator:
         self.add_node_bare(node)
         node.put_on_layout(self.layout)
 
+    def node_connected_with_class(self, node, classname):
+        for connection in self.Connections:
+            if node in connection:
+                if (connection[0] != node and \
+                    connection[0].__class__.__name__ == classname) or \
+                   (connection[1] != node and \
+                    connection[1].__class__.__name__ == classname):
+                    return True
+        return False
+
     def remove_node(self, node):
         assert(node in self.NodeList)
         self.lock.acquire()
@@ -296,9 +306,10 @@ class Locator:
         i = 0
         length = len(self.Connections)
         while i < length:
-            if node in Connections[0]:
-                self.Connections.remove(connection)
-                self.Connections_obj.remove(connection)
+            if node in self.Connections[i]:
+                self.Connections.remove(self.Connections[i])
+                self.Connections_obj.remove(self.Connections_obj[i])
+                length -= 1
             i += 1
         self.refresh_panel()
 

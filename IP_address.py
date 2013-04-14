@@ -62,6 +62,10 @@ class IP_address(Node, Base):
         assert(ip != None)
         self.ip = ip
 
+    def disappear(self):
+        self.gui.remove_node(self)
+        self.gui.remove_node_connections(self)
+
 # this doesn't have to find neighbors
 
 # vim: set et sts=4 sw=4:
