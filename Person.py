@@ -71,6 +71,9 @@ class Person(Node, Base):
             newmenu.append(newitem1)
             newitem2 = gtk.MenuItem('Find DNS')
             newmenu.append(newitem2)
+            item_remove = gtk.MenuItem('Remove')
+            newmenu.append(item_remove)
+            item_remove.connect("button-press-event", self.disappear)
             newmenu.show_all()
             newmenu.popup(None, None, None, event.button, event.time)
 

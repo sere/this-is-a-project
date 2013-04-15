@@ -73,6 +73,9 @@ class WebServer(Node, Base):
             newitem = gtk.MenuItem('Find neighbors')
             newmenu.append(newitem)
             newitem.connect("button-press-event", self.find_neighbors)
+            item_remove = gtk.MenuItem('Remove')
+            newmenu.append(item_remove)
+            item_remove.connect("button-press-event", self.disappear)
             newmenu.show_all()
             newmenu.popup(None, None, None, event.button, event.time)
 
@@ -90,6 +93,10 @@ class WebServer(Node, Base):
         out = self.runProcess([self.find_neighbors_script])
         for newid in str(out).strip().split():
             self.find_connect_node(newid)
+
+    def disappear(self, widget = None, event = None):
+        self.host.disappear()
+        super(WebServer, self).disappear()
 
 # vim: set et sts=4 sw=4:
 

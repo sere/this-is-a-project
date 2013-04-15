@@ -62,10 +62,16 @@ class IP_address(Node, Base):
         assert(ip != None)
         self.ip = ip
 
-    def disappear(self):
-        self.gui.remove_node(self)
-        self.gui.remove_node_connections(self)
-
 # this doesn't have to find neighbors
+    def node_clicked(self, widget, event):
+        # If right-click
+        if event.button == 3:
+            if not self.gui.node_connected_with_class(self, "Host") and not self.gui.node_connected_with_class(self, "DNS_server"):
+                newmenu = gtk.Menu()
+                item_remove = gtk.MenuItem('Remove')
+                newmenu.append(item_remove)
+                item_remove.connect("button-press-event", self.disappear)
+                newmenu.show_all()
+                newmenu.popup(None, None, None, event.button, event.time)
 
 # vim: set et sts=4 sw=4:

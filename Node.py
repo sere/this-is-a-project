@@ -160,6 +160,10 @@ class Node:
     def node_clicked(self, widget, event):
         pass
 
+    def disappear(self, widget = None, event = None):
+        self.gui.remove_node(self)
+        self.gui.remove_node_connections(self)
+
     def runProcess(self, exe):
         return subprocess.check_output(exe)
 
