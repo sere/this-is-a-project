@@ -65,6 +65,9 @@ class Smiley(Node, Base):
             newitem = gtk.MenuItem('Find friends!')
             newmenu.append(newitem)
             newitem.connect("button-press-event", self.find_neighbors)
+            item_remove = gtk.MenuItem('Remove')
+            newmenu.append(item_remove)
+            item_remove.connect("button-press-event", self.disappear)
             newmenu.show_all()
             newmenu.popup(None, None, None, event.button, event.time)
 

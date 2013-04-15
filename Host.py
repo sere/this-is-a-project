@@ -92,10 +92,6 @@ class Host(Node, Base):
         # If right-click
         if event.button == 3:
             newmenu = gtk.Menu()
-            if not self.gui.node_connected_with_class(self, "WebServer"):
-                item_remove = gtk.MenuItem('Remove')
-                newmenu.append(item_remove)
-                item_remove.connect("button-press-event", self.disappear)
             newitem = gtk.MenuItem('Find neighbors (ip)')
             newmenu.append(newitem)
             newitem.connect("button-press-event", self.find_neighbors)
@@ -105,13 +101,16 @@ class Host(Node, Base):
             newitem2 = gtk.MenuItem('Find up hosts')
             newmenu.append(newitem2)
             newitem2.connect("button-press-event", self.find_up)
+            if not self.gui.node_connected_with_class(self, "WebServer"):
+                item_remove = gtk.MenuItem('Remove')
+                newmenu.append(item_remove)
+                item_remove.connect("button-press-event", self.disappear)
             newmenu.show_all()
             newmenu.popup(None, None, None, event.button, event.time)
 
     def disappear(self, widget=None, event=None):
         self.ipaddr.disappear()
-        self.gui.remove_node(self)
-        self.gui.remove_node_connections(self)
+        super(Host, self).disappear()
 
     # Refresh host information with the current machine's
     def refresh_data(self, widget, event):

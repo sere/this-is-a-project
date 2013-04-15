@@ -52,11 +52,12 @@ class DNS_server(Node, Base):
     def __init__(self, ipaddr=None, name=None, x=50, y=50, ident=None, gui=None):
         assert(name != None)
 	Node.__init__(self, name, "DNS server", x, y, ident, gui)
-        if ipaddr == None:
-            ipaddr = gui.get_new_node("IP_address", None, None, x - 30, y)
-            gui.connect(self, ipaddr)
-        assert(ipaddr != None)
-        self.ip = ipaddr.getIp()
+        self.ipaddr = ipaddr
+        if self.ipaddr == None:
+            self.ipaddr = gui.get_new_node("IP_address", None, None, x - 30, y)
+            gui.connect(self, self.ipaddr)
+        assert(self.ipaddr != None)
+        self.ip = self.ipaddr.getIp()
 	self.find_neighbors_script = "./script.sh"
 
     def node_clicked(self, widget, event):
@@ -66,6 +67,9 @@ class DNS_server(Node, Base):
             newitem = gtk.MenuItem('Find neighbors')
             newmenu.append(newitem)
             newitem.connect("button-press-event", self.find_neighbors)
+            item_remove = gtk.MenuItem('Remove')
+            newmenu.append(item_remove)
+            item_remove.connect("button-press-event", self.disappear)
             newmenu.show_all()
             newmenu.popup(None, None, None, event.button, event.time)
 
@@ -82,5 +86,9 @@ class DNS_server(Node, Base):
         out = self.runProcess([self.find_neighbors_script])
         for newid in str(out).strip().split():
             self.find_connect_node(newid)
+
+    def disappear(self, widget, event):
+        self.ipaddr.disappear()
+        super(DNS_server, self).disappear()
  
 # vim: set et sts=4 sw=4:
